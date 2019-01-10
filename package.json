@@ -1,0 +1,32 @@
+{
+  "name": "language-online",
+  "version": "1.0.0",
+  "description": "Lean Languages Online",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lokit007/language-online.git"
+  },
+  "keywords": [
+    "Language Online",
+    "Study Language",
+    "Write Language"
+  ],
+  "author": "nhanviet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lokit007/language-online/issues"
+  },
+  "homepage": "https://github.com/lokit007/language-online#readme",
+  "dependencies": {
+    "bootstrap": "^4.2.1",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.3",
+    "validator": "^10.10.0"
+  }
+}

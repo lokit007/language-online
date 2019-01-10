@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="data/favicon.ico">
+    <title>Study Languages</title>
+    <base href="<%= baseUrl %>">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/main.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <section class="table-responsive">
+            <label id="study">Số lần học: <span id="so-lan-hoc">10</span> ĐÚNG : <span id="check-ok">3</span> SAI :
+                <span id="check-not-ok">7</span></label>
+            <table class="home-check table table-borderless">
+                <tr>
+                    <td>
+                        <textarea name="cau-1" id="cau-1" cols="30" rows="5" disabled></textarea>
+                        <input type="hidden" name="res-cau-1" id="res-cau-1" />
+                        <input type="hidden" name="id-cau" id="id-cau" />
+                        <input type="hidden" name="index" id="index" />
+                    </td>
+                    <td width="110">
+                        <button id="add-new" onclick="AddNew()">Thêm mới</button>
+                        <button id="cancel-new" onclick="CancelAdd()" style="display: none;">Hủy bỏ</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><label id="status"></label></td>
+                </tr>
+                <tr>
+                    <td><textarea onkeypress="onTestChange()" name="cau-2" id="cau-2" cols="30" rows="5"></textarea></td>
+                    <td><button id="check" onclick="UpdateData()">Kiểm tra</button></td>
+                </tr>
+            </table>
+        </section>
+    </div>
+    <script>
+        var data = JSON.parse('<%- JSON.stringify(data) %>');
+        function ShowData() {
+            if (data != {}) {
+                var index = Math.floor(Math.random() * data.length);
+                var dung = data[index].dung;
+                var sai = data[index].sai;
+
+                $('#so-lan-hoc').html((dung + sai));
+                $('#check-ok').html((dung));
+                $('#check-not-ok').html((sai));
+
+                $('#cau-1').val(data[index].lg1.cau);
+                $('#id-cau').val(data[index]._id);
+                $('#res-cau-1').val(data[index].lg2[0].cau);
+                $('#index').val(index);
+            }
+        }
+
+        function UpdateData() {
+            $('#check').attr('disabled', 'true');
+            var traLoi = $('#cau-2').val();
+            var dung = parseInt($('#check-ok').html());
+            var sai = parseInt($('#check-not-ok').html());
+            var index = $('#index').val();
+
+            if (traLoi == $('#res-cau-1').val()) dung += 1;
+            else sai += 1;
+
+            $.ajax({
+                url: '/update-cau',
+                method: 'POST',
+                data: {
+                    cau: $('#id-cau').val(),
+                    dung: dung,
+                    sai: sai,
+                },
+                success: rs => {
+                    $('#check-ok').html(dung);
+                    $('#check-not-ok').html(sai);
+                    $('#so-lan-hoc').html(dung + sai);
+                    data[index].sai = parseInt($('#check-not-ok').html());
+                    data[index].dung = parseInt($('#check-ok').html());
+                    $('#check').removeAttr('disabled');
+                    if (traLoi == $('#res-cau-1').val()) {
+                        $('#status').html('Bạn đã trả lời đúng, cố gắng phát huy nhé! Xin chúc mừng!');
+                        $('#status').attr('class', 'dung');
+                    } else {
+                        $('#status').html('Bạn đã trả lời sai mất rồi, cẩn thận nhé!');
+                        $('#status').attr('class', 'sai');
+                    }
+                    ShowData();
+                },
+                error: err => {
+                    console.log(err);
+                    alert('Cập nhật dữ liệu thất bại!');
+                    $('#check').removeAttr('disabled');
+                }
+            });
+        }
+
+        function onTestChange() {
+            var key = window.event.keyCode;
+            if (key === 13) {
+                UpdateData();
+            }
+        }
+        
+        $(document).ready(() => {
+            ShowData();
+        });
+    </script>
+</body>
+
+</html>
