@@ -28,6 +28,10 @@ function AddData() {
             console.log(data);
             var xacnhan = confirm('Bạn muốn thêm dữ liệu nữa không?');
             if(!xacnhan) CancelAdd();
+            else {
+                $('#cau-1').val('');
+                $('#cau-2').val('')
+            }
         },
         error: err => {
             console.log(err);
