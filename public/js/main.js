@@ -58,6 +58,7 @@ function ShowData() {
         $('#id-cau').val(data[index]._id);
         $('#res-cau-1').val(data[index].lg2[0].cau);
         $('#index').val(index);
+        $('#cau-2').val('');
     }
 }
 
@@ -89,11 +90,11 @@ function UpdateData() {
             if (traLoi == $('#res-cau-1').val()) {
                 $('#status').html('Bạn đã trả lời đúng, cố gắng phát huy nhé! Xin chúc mừng!');
                 $('#status').attr('class', 'dung');
+                ShowData();
             } else {
                 $('#status').html('Bạn đã trả lời sai mất rồi, cẩn thận nhé!');
                 $('#status').attr('class', 'sai');
             }
-            ShowData();
         },
         error: err => {
             console.log(err);
