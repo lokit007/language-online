@@ -17,8 +17,8 @@ var bodyParser = require('body-parser')
 var app = express();
 
 var port = process.env.PORT || 3000;
-// var baseUrl = 'http://localhost';
-var baseUrl = 'https://langueges-online.herokuapp.com/';
+var baseUrl = 'http://localhost';
+// var baseUrl = 'https://langueges-online.herokuapp.com/';
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
